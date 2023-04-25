@@ -1,6 +1,6 @@
 NAME = philosophers
 
-SRCS = philosophers.c
+SRCS = philosophers.c utils.c
 OBJS = $(SRCS:.c=.o)
 
 CC = gcc
@@ -10,10 +10,10 @@ LFLAGS = -lpthread
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) -o $(NAME) $(LFLAGS)
+	$(CC) $(CFLAGS) $(OBJS) -I ./ -o $(NAME) $(LFLAGS)
 
-%.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $@
+.c.o:
+	$(CC) $(CFLAGS) -I ./ -c $< -o $(<:.c=.o)
 
 clean:
 	rm -f $(OBJS)

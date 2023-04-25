@@ -7,27 +7,32 @@
 #include <unistd.h>
 #include <sys/time.h>
 
+# define ARG_ERR "number_of_philosophers \
+time_to_die \
+time_to_eat \
+time_to_sleep \
+{number_of_times_each_philosopher_must_eat}\n"
+
 typedef struct s_philo {
+	long 			start_time;
+	long 			last_eat;
 	int 			id;
 	int 			nb_eat;
 	int 			is_eating;
-	long 			last_eat;
-	pthread_t		thread;
-	pthread_mutex_t	*left_fork;
-	pthread_mutex_t	*right_fork;
-	struct s_var_philo	*var;
-}	t_philo;
-
-typedef struct s_var_philo {
 	int 			nb_philo;
 	int 			time_to_die;
 	int 			time_to_eat;
 	int 			time_to_sleep;
 	int 			nb_eat;
 	int 			is_dead;
-	long 			start_time;
-	pthread_mutex_t	*forks;
-	pthread_mutex_t	*print;
-	t_philo			*philo;
-}	t_var_philo;
+	pthread_t		thread;
+	pthread_mutex_t	*fork;
+}	t_philo;
+
+// utils.c
+int		ft_atoi(const char *str);
+int		ft_strlen(char *str);
+int		ft_error(char *str);
+long	get_time(void);
+
 #endif
