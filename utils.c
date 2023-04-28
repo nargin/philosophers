@@ -6,7 +6,7 @@
 /*   By: romaurel <romaurel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 11:49:05 by nrgn              #+#    #+#             */
-/*   Updated: 2023/04/25 16:08:22 by romaurel         ###   ########.fr       */
+/*   Updated: 2023/04/27 16:32:22 by romaurel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,11 @@ int	ft_atoi(const char *str)
 			sign = -1;
 	while (str[i] >= '0' && str[i] <= '9')
 		res = res * 10 + str[i++] - '0';
-	if (str[i] != '\0')
-		return (ft_error("Error: invalid argument\n"));
-	return (res * sign);
+	if (str[i] != '\0' || res > MAX || res < MIN)
+	{
+		if (res > MAX || res < MIN)
+			return (ft_error("Error: invalid argument\n"));
+		return (ft_error("Error: arguments contains non digit caracteres\n"));
+	}
+	return ((int)res * sign);
 }
