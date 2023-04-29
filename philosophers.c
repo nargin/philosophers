@@ -3,18 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: romaurel <romaurel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nrgn <nrgn@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 23:20:23 by nrgn              #+#    #+#             */
-/*   Updated: 2023/04/27 16:34:21 by romaurel         ###   ########.fr       */
+/*   Updated: 2023/04/30 00:31:16 by nrgn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
 int		check_value(int value, int order)
-{
-	if ((value < 2 || value > 200) && order == 0)
+{	if ((value < 2 || value > 200) && order == 0)
 	{
 		if (value < 2)
 			return (ft_error("Error: not enough philosophers\n"));
@@ -32,7 +31,7 @@ int		check_value(int value, int order)
 	return (0);
 }
 
-int	ft_init_philo(int ac, char *av[], t_philo *philo)
+int	ft_init_arg(int ac, char *av[], t_philo *philo)
 {
 	philo->nb_philo = ft_atoi(av[1]);
 	if (check_value(philo->nb_philo, 0) == -1)
@@ -59,25 +58,88 @@ int	ft_init_philo(int ac, char *av[], t_philo *philo)
 	return (0);
 }
 
+pthread_mutex_t	*ft_init_forks(int nb_philo)
+{
+	pthread_mutex_t	*fork;
+	int				i;
+
+	i = -1;
+	fork = malloc(sizeof(pthread_mutex_t) * nb_philo);
+	if (!fork)
+		return (NULL);
+	while (++i < nb_philo)
+		if (pthread_mutex_init(&fork[i], NULL) != 0)
+			return (NULL);
+	return (fork);
+}
+
+t_philo	**ft_init_philo(t_skateboard *pasta)
+{
+	t_philo	**philo_tab;
+	int		i;
+
+	i = -1;
+	philo_tab = malloc(sizeof(t_philo *) * pasta->nb_philo + 1);
+	if (!philo_tab)
+		return (NULL);
+	while (++i < pasta->nb_philo)
+	{
+		philo_tab[i] = malloc(sizeof(t_philo));
+		if (!philo_tab[i])
+			return (NULL);
+		if (pthread_mutex_init(&philo_tab[i]->eating, NULL) != 0)
+			return (NULL);
+		philo_tab[i]->skateboard = pasta;
+		philo_tab[i]->id = i;
+		philo_tab[i]->is_eating = 0;
+		philo_tab[i]->nb_eat = 0;
+		philo_tab[i]->left = i;
+		philo_tab[i]->right = (i + 1) % pasta->nb_philo;
+	}
+	return (philo_tab);
+}
+
+int	ft_init_thread(t_skateboard *pasta)
+{
+	int			i;
+
+	i = -1;
+	pasta->start_time = ft_get_time();
+	while (++i < pasta->nb_philo)
+	{
+		if (pthread_create(&pasta->philos[i]->thd, NULL,
+			start_routine, pasta->philos[i]) != 0)
+			return (-1);
+	}
+	i = -1;
+	while (++i < pasta->nb_philo)
+	{
+		if (pthread_create(&pasta->philos[i]->thp, NULL,
+			ft_death, pasta->philos[i]) != 0)
+			return (-1);
+	}
+	while (pasta->is_dead)
+		continue ;
+	return (-1);
+	
+}
 int main(int ac, char **av)
 {
-	t_philo	*philo;
+	t_skateboard	*pasta;
 
-	philo = malloc(sizeof(t_philo));
+	pasta = malloc(sizeof(t_skateboard));
 	if (!philo)
 		return (ft_error("Error: malloc failed\n"));
 	if (ac != 5 && ac != 6)
 		return (ft_error(ARG_ERR));
-	if (ft_init_philo(ac, av, philo) == -1)
+	if (ft_init_arg(ac, av, pasta) == -1)
 		return (ft_error(ARG_TOO_LOW));
-	printf("nb_philo = %d\n", philo->nb_philo);
-	printf("time_to_die = %d\n", philo->time_to_die);
-	printf("time_to_eat = %d\n", philo->time_to_eat);
-	printf("time_to_sleep = %d\n", philo->time_to_sleep);
-	if (ac == 6)
-		printf("nb_eat = %d\n", philo->nb_eat);
-	philo->start_time = ft_get_time();
-	printf("start_time = %ld\n", philo->start_time);
-	usleep(2000);
-	printf("time = %ld\n", ft_get_time() - philo->start_time);
-}  
+	pasta->forks = ft_init_forks(pasta->nb_philo);
+	if (!pasta->forks)
+		return (ft_error("Error: malloc failed\n"));
+	if (!ft_init_philo(pasta))
+		return (ft_error("Error: malloc failed\n"));
+	if (ft_init_thread(pasta) == -1)
+		return (ft_error("Error: thread failed\n"));
+	return (0);
+}

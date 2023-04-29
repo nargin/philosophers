@@ -18,19 +18,30 @@ time_to_sleep \
 # define ARG_TOO_LOW "Error: Arguments under 60 or too high\n"
 
 typedef struct s_philo {
-	long 			start_time;
-	long 			last_eat;
-	int 			id;
-	int 			is_eating;
+	pthread_mutex_t		eating;
+	pthread_t			thp;
+	pthread_t			thd;
+	int					id;
+	int					left;
+	int					right;
+	int					nb_eat;
+	int					is_eating;
+	long long			last_eat;
+	struct s_skateboard	*skateboard;
+}				t_philo;
+
+typedef struct s_skateboard {
+	t_philo			**philos;
+	pthread_mutex_t	*forks;
+	pthread_t		write;
+	long long		start_time;
+	int 			is_dead;
 	int 			nb_philo;
 	int 			time_to_die;
 	int 			time_to_eat;
 	int 			time_to_sleep;
 	int 			nb_eat;
-	int 			is_dead;
-	pthread_t		thread;
-	pthread_mutex_t	*forks;
-}	t_philo;
+}					t_skateboard;
 
 // utils.c
 int		ft_atoi(const char *str);
