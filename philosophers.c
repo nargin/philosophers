@@ -6,7 +6,7 @@
 /*   By: nrgn <nrgn@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 23:20:23 by nrgn              #+#    #+#             */
-/*   Updated: 2023/04/30 00:31:16 by nrgn             ###   ########.fr       */
+/*   Updated: 2023/04/30 12:27:09 by nrgn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int		check_value(int value, int order)
 	return (0);
 }
 
-int	ft_init_arg(int ac, char *av[], t_philo *philo)
+int	ft_init_arg(int ac, char *av[], t_skateboard *philo)
 {
 	philo->nb_philo = ft_atoi(av[1]);
 	if (check_value(philo->nb_philo, 0) == -1)
@@ -108,14 +108,14 @@ int	ft_init_thread(t_skateboard *pasta)
 	while (++i < pasta->nb_philo)
 	{
 		if (pthread_create(&pasta->philos[i]->thd, NULL,
-			start_routine, pasta->philos[i]) != 0)
+			philo_life, pasta->philos[i]) != 0)
 			return (-1);
 	}
 	i = -1;
 	while (++i < pasta->nb_philo)
 	{
 		if (pthread_create(&pasta->philos[i]->thp, NULL,
-			ft_death, pasta->philos[i]) != 0)
+			post_mortem, pasta->philos[i]) != 0)
 			return (-1);
 	}
 	while (pasta->is_dead)
@@ -128,7 +128,7 @@ int main(int ac, char **av)
 	t_skateboard	*pasta;
 
 	pasta = malloc(sizeof(t_skateboard));
-	if (!philo)
+	if (!pasta)
 		return (ft_error("Error: malloc failed\n"));
 	if (ac != 5 && ac != 6)
 		return (ft_error(ARG_ERR));
