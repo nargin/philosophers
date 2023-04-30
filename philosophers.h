@@ -33,8 +33,8 @@ typedef struct s_philo {
 typedef struct s_skateboard {
 	t_philo			**philos;
 	pthread_mutex_t	*forks;
-	pthread_t		write;
-	long long		start_time;
+	pthread_mutex_t	write;
+	long long int	start_time;
 	int 			is_dead;
 	int 			nb_philo;
 	int 			time_to_die;
@@ -48,5 +48,12 @@ int		ft_atoi(const char *str);
 int		ft_strlen(char *str);
 int		ft_error(char *str);
 long	ft_get_time(void);
+
+// day_in_a_life.c
+void	*start_routine(void *data);
+void	*philo_life(void *data);
+void    diner_ready(t_philo *philo);
+void    *post_mortem(void *data);
+void	print_status(t_skateboard *big_s, int id, char *s);
 
 #endif
