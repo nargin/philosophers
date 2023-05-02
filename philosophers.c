@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nrgn <nrgn@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: romaurel <romaurel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 23:20:23 by nrgn              #+#    #+#             */
-/*   Updated: 2023/04/30 12:27:09 by nrgn             ###   ########.fr       */
+/*   Updated: 2023/05/02 15:40:56 by romaurel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int		check_value(int value, int order)
 		return (ft_error("Error: time to eat is too short\n"));
 	else if (value < 60 && order == 3)
 		return (ft_error("Error: time to sleep is too short\n"));
-	else if (value < 0 && order == 4)
+	else if (value < 1 && order == 4)
 		return (ft_error("Error: number of time each philosopher must eat is too short\n"));
 	return (0);
 }
@@ -96,6 +96,7 @@ t_philo	**ft_init_philo(t_skateboard *pasta)
 		philo_tab[i]->left = i;
 		philo_tab[i]->right = (i + 1) % pasta->nb_philo;
 	}
+	philo_tab[i] = NULL;
 	return (philo_tab);
 }
 
@@ -118,11 +119,12 @@ int	ft_init_thread(t_skateboard *pasta)
 			post_mortem, pasta->philos[i]) != 0)
 			return (-1);
 	}
-	while (pasta->is_dead)
+	while (!pasta->is_dead)
 		continue ;
-	return (-1);
+	return (0);
 	
 }
+
 int main(int ac, char **av)
 {
 	t_skateboard	*pasta;
@@ -137,9 +139,11 @@ int main(int ac, char **av)
 	pasta->forks = ft_init_forks(pasta->nb_philo);
 	if (!pasta->forks)
 		return (ft_error("Error: malloc failed\n"));
-	if (!ft_init_philo(pasta))
+	pasta->philos = ft_init_philo(pasta);
+	if (!pasta->philos)
 		return (ft_error("Error: malloc failed\n"));
 	if (ft_init_thread(pasta) == -1)
 		return (ft_error("Error: thread failed\n"));
+	free(pasta);
 	return (0);
 }

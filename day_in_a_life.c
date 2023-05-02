@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   day_in_a_life.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nrgn <nrgn@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: romaurel <romaurel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/30 12:27:35 by nrgn              #+#    #+#             */
-/*   Updated: 2023/04/30 12:47:32 by nrgn             ###   ########.fr       */
+/*   Updated: 2023/05/02 16:26:28 by romaurel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void    *post_mortem(void *data)
     t_philo	*philo;
 
 	philo = (t_philo *)data;
-	while (philo->skateboard->is_dead)
+	while (!philo->skateboard->is_dead)
 	{
 		if (!philo->is_eating
 			&& ft_get_time() - philo->last_eat >= philo->skateboard->time_to_die)
@@ -37,7 +37,7 @@ void    *post_mortem(void *data)
 		}
 		if (philo->skateboard->philos[philo->skateboard->nb_philo - 1]->nb_eat
 			== philo->skateboard->nb_eat)
-			philo->skateboard->is_dead = 0;
+			philo->skateboard->is_dead = 1;
 		usleep(100);
 	}
 	return (NULL);
@@ -68,7 +68,7 @@ void	*philo_life(void *data)
 	long	time;
 
 	philo = (t_philo *)data;
-	while (philo->skateboard->is_dead)
+	while (!philo->skateboard->is_dead)
 	{
 		diner_ready(philo);
 		print_status(philo->skateboard, philo->id, "is sleeping\n");
