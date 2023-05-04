@@ -14,7 +14,9 @@ time_to_die \
 time_to_eat \
 time_to_sleep \
 {number_of_times_each_philosopher_must_eat}\n"
-
+# define MEALS "Error: number of time each philosopher must eat is too short\n"
+# define MALLOC_ERR "Error: Malloc failed\n"
+# define THREAD_ERR "Error: Thread failed\n"
 # define ARG_TOO_LOW "Error: Arguments under 60 or too high\n"
 
 typedef struct s_philo {

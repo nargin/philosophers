@@ -6,7 +6,7 @@
 /*   By: romaurel <romaurel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 11:49:05 by nrgn              #+#    #+#             */
-/*   Updated: 2023/04/27 16:32:22 by romaurel         ###   ########.fr       */
+/*   Updated: 2023/05/04 18:45:22 by romaurel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,25 @@ int	ft_error(char *str)
 {
 	write(2, str, ft_strlen(str));
 	return (-1);
+}
+
+int		check_value(int value, int order)
+{	if ((value < 2 || value > 200) && order == 0)
+	{
+		if (value < 2)
+			return (ft_error("Error: not enough philosophers\n"));
+		else
+			return (ft_error("Error: too many philosophers\n"));
+	}
+	else if (value < 60 && order == 1)
+		return (ft_error("Error: time to die is too short\n"));
+	else if (value < 60 && order == 2)
+		return (ft_error("Error: time to eat is too short\n"));
+	else if (value < 60 && order == 3)
+		return (ft_error("Error: time to sleep is too short\n"));
+	else if (value < 1 && order == 4)
+		return (ft_error(MEALS));
+	return (0);
 }
 
 int	ft_atoi(const char *str)
