@@ -19,29 +19,29 @@ time_to_sleep \
 
 typedef struct s_philo {
 	pthread_mutex_t		eating;
-	pthread_t			thp;
-	pthread_t			thd;
+	pthread_t			th_philo;
+	pthread_t			th_death;
 	int					id;
-	int					left;
-	int					right;
-	int					nb_eat;
+	int					fork_left;
+	int					fork_right;
+	int					nb_meals;
 	int					is_eating;
 	long long			last_eat;
-	struct s_skateboard	*skateboard;
+	struct s_data	*data;
 }				t_philo;
 
-typedef struct s_skateboard {
+typedef struct s_data {
 	t_philo			**philos;
 	pthread_mutex_t	*forks;
 	pthread_mutex_t	write;
 	long long int	start_time;
-	int 			is_dead;
-	int 			nb_philo;
-	int 			time_to_die;
-	int 			time_to_eat;
-	int 			time_to_sleep;
-	int 			nb_eat;
-}					t_skateboard;
+	int 			loop;
+	int 			n_philo;
+	int 			tdie;
+	int 			teat;
+	int 			tsleep;
+	int 			n_meal;
+}					t_data;
 
 // utils.c
 int		ft_atoi(const char *str);

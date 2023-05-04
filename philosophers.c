@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: romaurel <romaurel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nrgn <nrgn@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 23:20:23 by nrgn              #+#    #+#             */
-/*   Updated: 2023/05/02 15:40:56 by romaurel         ###   ########.fr       */
+/*   Updated: 2023/05/04 12:38:48 by nrgn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,12 @@ int		check_value(int value, int order)
 		return (ft_error("Error: time to eat is too short\n"));
 	else if (value < 60 && order == 3)
 		return (ft_error("Error: time to sleep is too short\n"));
-	else if (value < 1 && order == 4)
+	else if (value < -1 && order == 4)
 		return (ft_error("Error: number of time each philosopher must eat is too short\n"));
 	return (0);
 }
 
-int	ft_init_arg(int ac, char *av[], t_skateboard *philo)
+int	ft_init_arg(int ac, char *av[], t_philo *philo)
 {
 	philo->nb_philo = ft_atoi(av[1]);
 	if (check_value(philo->nb_philo, 0) == -1)
@@ -45,7 +45,7 @@ int	ft_init_arg(int ac, char *av[], t_skateboard *philo)
 	philo->time_to_sleep = ft_atoi(av[4]);
 	if (check_value(philo->time_to_sleep, 3) == -1)
 		return (-1);
-	philo->nb_eat = 0;
+	philo->nb_eat = -1;
 	if (ac == 6)
 	{
 		philo->nb_eat = ft_atoi(av[5]);
@@ -73,7 +73,7 @@ pthread_mutex_t	*ft_init_forks(int nb_philo)
 	return (fork);
 }
 
-t_philo	**ft_init_philo(t_skateboard *pasta)
+t_philo	**ft_init_time(t_skateboard *pasta)
 {
 	t_philo	**philo_tab;
 	int		i;
@@ -125,25 +125,36 @@ int	ft_init_thread(t_skateboard *pasta)
 	
 }
 
+int	ft_init(t_data **game, int ac, char *av[])
+{
+	*game = malloc(sizeof(t_data));
+	if (!*game)
+		return (ft_error(MALLOC_ERR));
+	ft_init_arg(ac, av, *game)
+	(*game)->pasta->forks = ft_init_forks((*game)->pasta->nb_philo);
+	if (!(*game)->pasta->forks)
+		return (ft_error(MALLOC_ERR));
+	(*game)->pasta->philos = ft_init_philo((*game)->pasta);
+	if (!(*game)->pasta->philos)
+		return (ft_error(MALLOC_ERR));
+	if (ft_init_thread((*game)->pasta) == -1)
+		return (ft_error(THREAD_ERR));
+	return (0);
+}
+
 int main(int ac, char **av)
 {
-	t_skateboard	*pasta;
+	t_data	*game;
 
-	pasta = malloc(sizeof(t_skateboard));
-	if (!pasta)
-		return (ft_error("Error: malloc failed\n"));
+	game = NULL;
 	if (ac != 5 && ac != 6)
 		return (ft_error(ARG_ERR));
-	if (ft_init_arg(ac, av, pasta) == -1)
-		return (ft_error(ARG_TOO_LOW));
-	pasta->forks = ft_init_forks(pasta->nb_philo);
-	if (!pasta->forks)
-		return (ft_error("Error: malloc failed\n"));
-	pasta->philos = ft_init_philo(pasta);
-	if (!pasta->philos)
-		return (ft_error("Error: malloc failed\n"));
-	if (ft_init_thread(pasta) == -1)
-		return (ft_error("Error: thread failed\n"));
-	free(pasta);
+	if (ft_init(&game, ac, av) == -1)
+		return (-1);
+	start_game(game);
+	//ft_init_arg(ac, av, game
+	//ft_init_struct(game->n_philo);
+	//ft_init_philo(game);
+	//ft_init_thread(game) == -1)
 	return (0);
 }
