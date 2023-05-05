@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nrgn <nrgn@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: romaurel <romaurel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 18:36:30 by romaurel          #+#    #+#             */
-/*   Updated: 2023/05/05 14:49:59 by nrgn             ###   ########.fr       */
+/*   Updated: 2023/05/05 18:45:36 by romaurel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ int	ft_init_forks(t_data **data)
 
 int	ft_init_arg(int ac, char *av[], t_data **data)
 {
+	(*data)->loop = 1;
 	(*data)->n_philo = ft_atoi(av[1]);
 	if (check_value((*data)->n_philo, 0) == -1)
 		return (-1);

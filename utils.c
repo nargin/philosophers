@@ -3,36 +3,32 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nrgn <nrgn@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: romaurel <romaurel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 11:49:05 by nrgn              #+#    #+#             */
-/*   Updated: 2023/05/05 13:09:10 by nrgn             ###   ########.fr       */
+/*   Updated: 2023/05/05 19:45:57 by romaurel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-int	ft_strlen(char *str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i])
-		i++;
-	return (i);
-}
-
-long	ft_get_time(void)
+long long	ft_get_time(void)
 {
 	struct timeval	tv;
+	long long		time;
 
 	gettimeofday(&tv, NULL);
-	return (tv.tv_sec * 1000 + tv.tv_usec / 1000);
+	time = (tv.tv_sec * 1000LL + tv.tv_usec / 1000);
+	return (time);
 }
 
 int	ft_error(char *str)
 {
-	write(2, str, ft_strlen(str));
+	int i;
+
+	i = 0;
+	while (str[i] && str)
+		write(2, &str[i++], 1);
 	return (-1);
 }
 
@@ -53,6 +49,31 @@ int		check_value(int value, int order)
 	else if (value < 1 && order == 4)
 		return (ft_error(MEALS));
 	return (0);
+}
+
+void	print_struct(t_data *game)
+{
+	int	i;
+
+	i = -1;
+	printf("start_time = %lld\n", game->start_time);
+	printf("loop = %d\n", game->loop);
+	printf("n_philo = %d\n", game->n_philo);
+	printf("time_to_die = %d\n", game->tdie);
+	printf("time_to_eat = %d\n", game->teat);
+	printf("time_to_sleep = %d\n", game->tsleep);
+	printf("n_meal = %d\n", game->n_meal);
+	while (++i < game->n_philo)
+	{
+		printf("\n------------------\n");
+		printf("philos[%d]->id = %d\n", i, game->philos[i]->id);
+		printf("philos[%d]->fork_left = %d\n", i, game->philos[i]->fork_left);
+		printf("philos[%d]->fork_right = %d\n", i, game->philos[i]->fork_right);
+		printf("philos[%d]->nb_meals = %d\n", i, game->philos[i]->nb_meals);
+		printf("philos[%d]->is_eating = %d\n", i, game->philos[i]->is_eating);
+		printf("philos[%d]->last_eat = %lld\n", i, game->philos[i]->last_eat);
+		printf("\n------------------\n");
+	}
 }
 
 int	ft_atoi(const char *str)

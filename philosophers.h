@@ -20,39 +20,39 @@ time_to_sleep \
 # define ARG_TOO_LOW "Error: Arguments under 60 or too high\n"
 
 typedef struct s_philo {
-	pthread_mutex_t		eating;
+	int					fork_right;
+	int					fork_left;
+	int					is_eating;
+	long long int		last_eat;
 	pthread_t			th_philo;
 	pthread_t			th_death;
-	int					id;
-	int					fork_left;
-	int					fork_right;
 	int					nb_meals;
-	int					is_eating;
-	long long			last_eat;
+	pthread_mutex_t		eating;
+	int					id;
 	struct s_data	*data;
 }				t_philo;
 
 typedef struct s_data {
-	t_philo			**philos;
-	pthread_mutex_t	*forks;
-	pthread_mutex_t	write;
 	long long int	start_time;
-	int 			loop;
+	t_philo			**philos;
 	int 			n_philo;
-	int 			tdie;
-	int 			teat;
+	pthread_mutex_t	*forks;
 	int 			tsleep;
 	int 			n_meal;
+	pthread_mutex_t	 write;
+	int 			loop;
+	int 			tdie;
+	int 			teat;
 }					t_data;
 
 int	ft_init(t_data **game, int ac, char *av[]);
+void	print_struct(t_data *data);
 
 // utils.c
-int		check_value(int value, int order);
-int		ft_atoi(const char *str);
-int		ft_strlen(char *str);
-int		ft_error(char *str);
-long	ft_get_time(void);
+int			check_value(int value, int order);
+int			ft_atoi(const char *str);
+int			ft_error(char *str);
+long long	ft_get_time(void);
 
 // thread.c
 void	*start_routine(void *data);
