@@ -3,38 +3,36 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: romaurel <romaurel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nrgn <nrgn@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 23:20:23 by nrgn              #+#    #+#             */
-/*   Updated: 2023/05/04 19:26:18 by romaurel         ###   ########.fr       */
+/*   Updated: 2023/05/05 14:50:37 by nrgn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-int	ft_init_thread(t_skateboard *pasta)
+void	start_game(t_data **data)
 {
-	int			i;
+	int	i;
 
 	i = -1;
-	pasta->start_time = ft_get_time();
-	while (++i < pasta->nb_philo)
+	(*data)->start_time = ft_get_time();
+	while (++i < (*data)->n_philo)
 	{
-		if (pthread_create(&pasta->philos[i]->thd, NULL,
-			philo_life, pasta->philos[i]) != 0)
-			return (-1);
+		if (pthread_create(&(*data)->philos[i]->th_philo, NULL,
+			philo_life, (*data)->philos[i]) != 0)
+			return ;
 	}
 	i = -1;
-	while (++i < pasta->nb_philo)
+	while (++i < (*data)->n_philo)
 	{
-		if (pthread_create(&pasta->philos[i]->thp, NULL,
-			post_mortem, pasta->philos[i]) != 0)
-			return (-1);
+		if (pthread_create(&(*data)->philos[i]->th_death, NULL,
+			post_mortem, (*data)->philos[i]) != 0)
+			return ;
 	}
-	while (!pasta->is_dead)
+	while (!(*data)->loop)
 		continue ;
-	return (0);
-	
 }
 
 int main(int ac, char **av)
@@ -46,6 +44,6 @@ int main(int ac, char **av)
 		return (ft_error(ARG_ERR));
 	if (ft_init(&game, ac, av) == -1)
 		return (-1);
-	start_game(game);
+	start_game(&game);
 	return (0);
 }

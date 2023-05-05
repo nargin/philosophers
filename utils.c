@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: romaurel <romaurel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nrgn <nrgn@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 11:49:05 by nrgn              #+#    #+#             */
-/*   Updated: 2023/05/04 18:45:22 by romaurel         ###   ########.fr       */
+/*   Updated: 2023/05/05 13:09:10 by nrgn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,9 @@ int	ft_strlen(char *str)
 long	ft_get_time(void)
 {
 	struct timeval	tv;
-	long			time;
 
 	gettimeofday(&tv, NULL);
-	time = tv.tv_sec * 1000 + tv.tv_usec / 1000;
-	return (time);
+	return (tv.tv_sec * 1000 + tv.tv_usec / 1000);
 }
 
 int	ft_error(char *str)

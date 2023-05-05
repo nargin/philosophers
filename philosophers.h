@@ -45,17 +45,20 @@ typedef struct s_data {
 	int 			n_meal;
 }					t_data;
 
+int	ft_init(t_data **game, int ac, char *av[]);
+
 // utils.c
+int		check_value(int value, int order);
 int		ft_atoi(const char *str);
 int		ft_strlen(char *str);
 int		ft_error(char *str);
 long	ft_get_time(void);
 
-// day_in_a_life.c
+// thread.c
 void	*start_routine(void *data);
 void	*philo_life(void *data);
 void    diner_ready(t_philo *philo);
 void    *post_mortem(void *data);
-void	print_status(t_skateboard *big_s, int id, char *s);
+void	print_status(t_data *data, int id, char *s);
 
 #endif
