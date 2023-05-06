@@ -33,32 +33,32 @@ typedef struct s_philo {
 }				t_philo;
 
 typedef struct s_data {
-	long long int	start_time;
-	t_philo			**philos;
-	int 			n_philo;
-	pthread_mutex_t	*forks;
-	int 			tsleep;
-	int 			n_meal;
-	pthread_mutex_t	 write;
-	int 			loop;
-	int 			tdie;
-	int 			teat;
+	unsigned long long	start_time;
+	t_philo				**philos;
+	int 				n_philo;
+	pthread_mutex_t		*forks;
+	unsigned int 		tsleep;
+	int 				n_meal;
+	pthread_mutex_t	 	write;
+	int 				loop;
+	unsigned int 		tdie;
+	unsigned int		teat;
 }					t_data;
 
 int	ft_init(t_data **game, int ac, char *av[]);
 void	print_struct(t_data *data);
+void	mimir(t_data *data, long long int wait);
 
 // utils.c
 int			check_value(int value, int order);
 int			ft_atoi(const char *str);
 int			ft_error(char *str);
-long long	ft_get_time(void);
+unsigned long long	ft_get_time(void);
 
 // thread.c
 void	*start_routine(void *data);
 void	*philo_life(void *data);
-void    diner_ready(t_philo *philo);
-void    *post_mortem(void *data);
+void	*post_mortem(void *data);
 void	print_status(t_data *data, int id, char *s);
 
 #endif

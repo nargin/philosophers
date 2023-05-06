@@ -1,13 +1,16 @@
-NAME = philosophers
+NAME = philo
 
 SRCS = philosophers.c utils.c init.c thread.c
 OBJS = $(SRCS:.c=.o)
 
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror 
 LFLAGS = -lpthread
 
 all: $(NAME)
+
+thd: CFLAGS += -fsanitize=thread
+thd: $(NAME)
 
 $(NAME): $(OBJS)
 	$(CC) $(CFLAGS) $(OBJS) -I ./ -o $(NAME) $(LFLAGS)
@@ -23,4 +26,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all clean fclean re
+.PHONY: all clean fclean re thd
