@@ -1,11 +1,23 @@
-#ifndef PHILOSOPHERS_H
-#define PHILOSOPHERS_H
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   philosophers.h                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: romaurel <romaurel@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/05/07 16:09:32 by romaurel          #+#    #+#             */
+/*   Updated: 2023/05/07 16:11:52 by romaurel         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <pthread.h>
-#include <unistd.h>
-#include <sys/time.h>
+#ifndef PHILOSOPHERS_H
+# define PHILOSOPHERS_H
+
+# include <stdio.h>
+# include <stdlib.h>
+# include <pthread.h>
+# include <unistd.h>
+# include <sys/time.h>
 
 # define MAX 2147483647
 # define MIN -2147483648
@@ -29,33 +41,33 @@ typedef struct s_philo {
 	int					nb_meals;
 	pthread_mutex_t		eating;
 	int					id;
-	struct s_data	*data;
+	struct s_data		*data;
 }				t_philo;
 
 typedef struct s_data {
 	unsigned long long	start_time;
 	t_philo				**philos;
-	int 				n_philo;
+	int					n_philo;
 	pthread_mutex_t		*forks;
-	unsigned int 		tsleep;
-	int 				n_meal;
-	pthread_mutex_t	 	write;
-	int 				loop;
-	unsigned int 		tdie;
+	unsigned int		tsleep;
+	int					n_meal;
+	pthread_mutex_t		write;
+	int					loop;
+	unsigned int		tdie;
 	unsigned int		teat;
 }					t_data;
 
-t_data	*ft_init(char *av[]);
-void	print_struct(t_data *data);
+t_data				*ft_init(char *av[]);
+void				print_struct(t_data *data);
 
 // utils.c
+int					ft_atoi(const char *str);
+int					check_arg(char **av);
+int					ft_error(char *str);
 unsigned long long	ft_get_time(void);
-int			ft_atoi(const char *str);
-int			check_arg(char **av);
-int			ft_error(char *str);
 
 // thread.c
-void	*philo_life(void *data);
-void	print_status(t_data *data, int id, char *s);
+void				*philo_life(void *data);
+void				print_status(t_data *data, int id, char *s);
 
 #endif

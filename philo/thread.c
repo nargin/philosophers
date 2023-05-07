@@ -6,7 +6,7 @@
 /*   By: romaurel <romaurel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/30 12:27:35 by nrgn              #+#    #+#             */
-/*   Updated: 2023/05/07 14:10:47 by romaurel         ###   ########.fr       */
+/*   Updated: 2023/05/07 16:14:02 by romaurel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static void	sleeping(t_philo *philo)
 		continue ;
 }
 
-static void    diner_ready(t_philo *philo)
+static void	diner_ready(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->data->forks[philo->fork_left]);
 	print_status(philo->data, philo->id, "has taken a fork\n");
@@ -56,14 +56,11 @@ static void    diner_ready(t_philo *philo)
 	pthread_mutex_unlock(&philo->data->forks[philo->fork_right]);
 }
 
-
 void	*philo_life(void *data)
 {
 	t_philo	*philo;
 
 	philo = (t_philo *)data;
-	// if (philo->id % 2)
-	// 	usleep(70);
 	while (philo->data->loop)
 	{
 		diner_ready(philo);
@@ -73,4 +70,3 @@ void	*philo_life(void *data)
 	}
 	return (NULL);
 }
-

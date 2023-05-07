@@ -6,7 +6,7 @@
 /*   By: romaurel <romaurel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 11:49:05 by nrgn              #+#    #+#             */
-/*   Updated: 2023/05/07 13:55:36 by romaurel         ###   ########.fr       */
+/*   Updated: 2023/05/07 16:12:29 by romaurel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 unsigned long long	ft_get_time(void)
 {
-	struct timeval	tv;
+	struct timeval			tv;
 	unsigned long long		time;
 
 	gettimeofday(&tv, NULL);
@@ -24,7 +24,7 @@ unsigned long long	ft_get_time(void)
 
 int	ft_error(char *str)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (str[i] && str)
@@ -35,7 +35,7 @@ int	ft_error(char *str)
 int	check_arg(char **av)
 {
 	int	value;
-	
+
 	value = ft_atoi(av[1]);
 	if ((value < 1 || value > 200))
 	{

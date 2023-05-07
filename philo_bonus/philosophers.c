@@ -6,41 +6,11 @@
 /*   By: romaurel <romaurel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 23:20:23 by nrgn              #+#    #+#             */
-/*   Updated: 2023/05/07 14:24:11 by romaurel         ###   ########.fr       */
+/*   Updated: 2023/05/07 16:13:27 by romaurel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
-
-void	end_game(t_data *data)
-{
-	int	i;
-
-	// i = -1;
-	// if (data->n_philo == 1)
-	// 	pthread_detach(data->philos[0]->th_philo);
-	// else
-	// {
-	// 	while (++i < data->n_philo)
-	// 	{
-	// 		pthread_join(data->philos[i]->th_philo, NULL);
-	// 		pthread_join(data->philos[i]->th_death, NULL);
-	// 	}
-	// }
-	i = -1;
-	while (++i < data->n_philo)
-	{
-		// pthread_mutex_destroy(&data->philos[i]->eating);
-		free(data->philos[i]);
-	}
-	free(data->philos);
-	i = -1;
-	// while (++i < data->n_philo)
-	// 	pthread_mutex_destroy(&data->forks[i]);
-	free(data->forks);
-	// pthread_mutex_destroy(&data->write);
-	free(data);
-}
 
 void	*post_mortem(void *data)
 {
@@ -49,8 +19,8 @@ void	*post_mortem(void *data)
 	philo = (t_philo *)data;
 	while (philo->data->loop)
 	{
-		if (!philo->is_eating &&
-			ft_get_time() - philo->last_eat >= philo->data->tdie)
+		if (!philo->is_eating
+			&& ft_get_time() - philo->last_eat >= philo->data->tdie)
 		{
 			pthread_mutex_lock(&philo->eating);
 			print_status(philo->data, philo->id, "died\n");
@@ -79,7 +49,7 @@ int	start_game(t_data *data)
 	{
 		data->philos[i]->last_eat = ft_get_time();
 		if (pthread_create(&data->philos[i]->th_philo, NULL,
-			&philo_life, data->philos[i]) != 0)
+				&philo_life, data->philos[i]) != 0)
 			return (1);
 		usleep(100);
 	}
@@ -87,7 +57,7 @@ int	start_game(t_data *data)
 	while (++i < data->n_philo)
 	{
 		if (pthread_create(&data->philos[i]->th_death, NULL,
-			&post_mortem, data->philos[i]) != 0)
+				&post_mortem, data->philos[i]) != 0)
 			return (1);
 		usleep(100);
 	}
@@ -96,7 +66,7 @@ int	start_game(t_data *data)
 	return (0);
 }
 
-int main(int ac, char **av)
+int	main(int ac, char **av)
 {
 	t_data	*data;
 
